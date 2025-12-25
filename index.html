@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣诞快乐</title>
+    <link rel="stylesheet" href="./normalize.css">
+    <link rel="stylesheet" href="./default.css">
+    <link rel="stylesheet" href="./main.css">
+    <style type="text/css">
+        /* 打字光标动画 */
+        .typed-cursor{
+            opacity: 1;
+            font-weight: 100;
+            animation: blink 0.7s infinite;
+            color: #ffffff;
+        }
+        @keyframes blink{
+            0% { opacity:1; }
+            50% { opacity:0; }
+            100% { opacity:1; }
+        }
+        .typed-fade-out{
+            opacity: 0;
+            animation: 0;
+            transition: opacity .25s;
+        }
+
+        /* 基础样式 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000000;
+            height: 100vh;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+        /* 视频样式 */
+        #bgVideo {
+            position: absolute;
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            width: 60%; 
+            height: auto; 
+            z-index: -2;
+            filter: brightness(1.0); 
+            border-radius: 10px;
+        }
+        /* 圣诞背景图 */
+        .christmas-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 1;
+            opacity: 1;
+        }
+        /* 文字容器 */
+        .type-wrap {
+            position: absolute;
+            top: 30%;
+            left: 10%;
+            z-index: 6;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        /* 文字渐变（仅作用于纯文字） */
+        .text-gradient {
+            background: linear-gradient(to right, #ff99cc, #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 8px rgba(255, 153, 204, 0.6);
+            display: inline-block;
+        }
+        /* emoji表情保留原色 */
+        .emoji {
+            color: inherit;
+            background: none;
+            -webkit-background-clip: initial;
+            background-clip: initial;
+            text-shadow: none;
+        }
+        /* 大标题样式 */
+        .merry-title {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            font-size: 40px;
+            color: #fefefe;
+            font-family: "Brush Script MT", cursive;
+            text-shadow: 2px 2px 10px rgba(255,215,0,0.8);
+        }
+        /* 雪花容器 */
+        #divSnow-1 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 4;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body onclick="playAll()">
+    <!-- 背景视频 -->
+    <video id="bgVideo" loop muted preload="auto">
+        <source src="./christmas.mp4" type="video/mp4">
+    </video>
+
+    <!-- 雪花容器 -->
+    <div id="divSnow-1"></div>
+
+    <!-- 文字区域（拆分文字和emoji） -->
+    <div class="type-wrap">
+        <div id="typed"></div>
+        <span class="typed-cursor">|</span>
+    </div>
+
+    <!-- 大标题 -->
+    <div class="merry-title">Merry Christmas</div>
+
+    <!-- 背景音乐：修改为本地Christmas.mp3，闭合audio标签 -->
+    <audio id="audio" src="./Christmas.mp3" preload="auto" loop>
+
+    <!-- 引入本地JS文件 -->
+    <script src="./jquery.min.js"></script>
+    <script src="./typed.js"></script>
+    <script src="./websnowjq.js"></script>
+
+    <script>
+        // 初始化雪花
+        document.addEventListener('DOMContentLoaded', function(){
+            $("#divSnow-1").websnowjq({
+                count: 150, 
+                size: 3,    
+                speed: 2    
+            });
+
+            // 定义带标签的文字内容（emoji用span包裹保留原色）
+            const strings = [
+                '<span class="text-gradient">圣诞老爷爷</span><span class="emoji">🎅</span><br><span class="text-gradient">昨天偷偷告诉我</span><br><span class="text-gradient">你就是我的礼物</span><span class="emoji">🎁</span>',
+                '<span class="emoji">🔔🍎❄️</span><span class="text-gradient">MerrY</span><span class="emoji">🎄</span><span class="text-gradient">CHRISTMAS</span><span class="emoji">🎄🎶</span>',
+                '<span class="text-gradient">愿郭彤颖所求皆如愿，所行皆坦途，圣诞喜乐！</span>'
+            ];
+
+            // 初始化打字动画，支持HTML标签
+            Typed.new("#typed", {
+                strings: strings,
+                typeSpeed: 110,
+                loop: false,
+                contentType: 'html' // 关键：开启HTML解析，让span标签生效
+            });
+        });
+
+        // 播放视频+音乐
+        function playAll() {
+            document.getElementById('bgVideo').play();
+            document.getElementById('audio').play();
+        }
+    </script>
+</body>
+</html>
